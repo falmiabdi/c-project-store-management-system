@@ -1,0 +1,82 @@
+// ANSI color codes
+const string RESET = "\033[0m";
+const string RED = "\033[31m";
+const string GREEN_TEXT = "\033[32m"; // Green text color
+const string YELLOW = "\033[33m"; // Warning messages
+const string BLUE = "\033[34m"; // Info messages
+const string MAGENTA = "\033[35m"; // Important prompts
+const string CYAN = "\033[36m"; // General prompts
+
+// Function to display a welcome message
+void displayWelcomeMessage() {
+    cout << BLUE << "Welcome to the Product Management System!\n" << RESET;
+}
+
+// Function to display a separator
+void displaySeparator() {
+    cout << CYAN << "---------------------------------------------------------\n" << RESET;
+}
+
+// Example usage in the main function
+int main() {
+    displayWelcomeMessage(); // Display welcome message
+    int choice;
+    string loggedInUser;
+    while (true) {
+        cout << MAGENTA << "Select user type:\n1. User\n2. Admin\nEnter choice: " << RESET;
+        cin >> choice;
+        if (choice != 1 && choice != 2) {
+            cout << RED << "Invalid choice! Exiting...\n" << RESET;
+            return 0;
+        }
+        if (choice == 1) {
+            while (true) {
+                cout << MAGENTA << "\n1. Register\n2. Login\n3. Reset Password\n4. Exit to Main Menu\nEnter choice: ";
+                cin >> choice;
+                if (choice < 1 || choice > 4) {
+                    cout << RED << "Invalid choice! Exiting...\n" << RESET;
+                    return 0;
+                }
+                switch (choice) {
+                    case 1: 
+                        registerUser("users.txt");  
+                        break;
+                    case 2: 
+                        if (loginUser("users.txt", loggedInUser)) {
+                            userMenu();
+                        }
+                        break;
+                    case 3: 
+                        cout << YELLOW << "Reset password functionality pending\n" << RESET; 
+                        break;
+                    case 4: 
+                        exitToMainMenu();
+                        break;
+                    default: 
+                        cout << RED << "Invalid choice!\n" << RESET;
+                }
+            }
+        } else if (choice == 2) {
+            string filename = "admin.txt";
+            bool loggedIn = false;
+            while (true) {
+                cout << MAGENTA << "\n1. Login\n2. Exit to Main Menu\nEnter choice: " << RESET;
+                cin >> choice;
+                if (choice < 1 || choice > 2) {
+                    cout << RED << "Invalid choice! Please try again.\n" << RESET;
+                    continue;
+                }
+                if (choice == 1) {
+                    if (loginUser(filename, loggedInUser)) {
+                        adminMenu();
+                    }
+                } else if (choice == 2) {
+                    exitToMainMenu();
+                    break;
+                }
+            }
+        }
+    }
+    cout << GREEN_TEXT << "Thank you for using the Product Management System!\n" << RESET;
+    return 0;
+}
